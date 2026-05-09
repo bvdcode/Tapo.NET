@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Tapo.csproj" />
+    <ProjectReference Include="..\Tapo\Tapo.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="Exists('secrets.json')">

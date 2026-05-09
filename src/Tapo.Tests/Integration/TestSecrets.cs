@@ -40,16 +40,16 @@ internal sealed class TestSecrets
 
     public static TestSecrets? TryLoad()
     {
-        // The console-test secrets file is preferred (matches Blink.NET layout
-        // where secrets.json lives in the console-test project so a single
-        // source of truth feeds both the sample and the integration tests).
+        // Preferred: the copy that the test project pins to its output
+        // directory. Fall back to the source-tree files (when running from
+        // a checkout) and then to the sibling console-test project (so a
+        // single secrets file can feed both the sample and the tests).
         var candidates = new[]
         {
             Path.Combine(AppContext.BaseDirectory, "secrets.json"),
             Path.Combine(Directory.GetCurrentDirectory(), "secrets.json"),
             Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "secrets.json")),
-            Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "samples", "Tapo.ConsoleTest", "secrets.json")),
-            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "samples", "Tapo.ConsoleTest", "secrets.json")),
+            Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "Tapo.ConsoleTest", "secrets.json")),
         };
 
         var path = candidates.FirstOrDefault(File.Exists);

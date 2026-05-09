@@ -171,7 +171,7 @@ Throughput knobs live on `VideoDownloaderOptions`:
 
 ## Sample console application
 
-A small example lives in [`samples/Tapo.ConsoleTest`](samples/Tapo.ConsoleTest):
+A small example lives in [`src/Tapo.ConsoleTest`](src/Tapo.ConsoleTest):
 
 1. Create a `secrets.json` next to `Program.cs` (gitignored):
 
@@ -191,7 +191,7 @@ A small example lives in [`samples/Tapo.ConsoleTest`](samples/Tapo.ConsoleTest):
 2. Build and run:
 
    ```powershell
-   cd samples/Tapo.ConsoleTest
+   cd src/Tapo.ConsoleTest
    dotnet run -- 20251109     # download recordings of 2025-11-09
    ```
 
@@ -201,7 +201,7 @@ A small example lives in [`samples/Tapo.ConsoleTest`](samples/Tapo.ConsoleTest):
 ## Live integration tests
 
 The repository includes live integration tests in
-[`tests/Tapo.Tests`](tests/Tapo.Tests). They exercise:
+[`src/Tapo.Tests`](src/Tapo.Tests). They exercise:
 
 - Local login (legacy `hashed=true` and modern `encrypt_type=3`).
 - `getDeviceInfo`, `getClockStatus`, recordings listing.
@@ -212,14 +212,14 @@ The repository includes live integration tests in
 - Single-session and time-sliced parallel downloads (compares wall-clock
   duration of both modes for a recording of 30 s+).
 
-Tests load `secrets.json` from the test output directory. A copy of the
-sample's `secrets.json` next to `tests/Tapo.Tests/Tapo.Tests.csproj` is
-auto-copied at build time. Tests skip cleanly with a console note when the
-file is missing or the camera is not reachable, so CI without a camera stays
-green.
+Tests load `secrets.json` from the test output directory. Drop a copy
+next to `src/Tapo.Tests/Tapo.Tests.csproj` (or reuse the one next to the
+console-test project) and the test csproj will copy it to the test output
+on build. Tests skip cleanly with a console note when the file is missing
+or the camera is not reachable, so CI without a camera stays green.
 
 ```powershell
-dotnet test tests/Tapo.Tests/Tapo.Tests.csproj
+dotnet test src/Tapo.Tests/Tapo.Tests.csproj
 ```
 
 Downloaded artefacts go to `%TEMP%/Tapo.NET.Tests.Downloads`.
@@ -230,14 +230,16 @@ Downloaded artefacts go to `%TEMP%/Tapo.NET.Tests.Downloads`.
 Tapo.NET/
 ├── README.md
 ├── LICENSE
-├── Tapo.NET.sln
+├── GitVersion.yml
 ├── Directory.Build.props
-├── src/
-│   └── Tapo.csproj                 (PackageId: Tapo.NET, RootNamespace: Tapo)
-├── samples/
-│   └── Tapo.ConsoleTest/           sample CLI + secrets.json template
-└── tests/
+└── src/
+    ├── Tapo.sln
+    ├── Tapo/                       library (PackageId: Tapo.NET, RootNamespace: Tapo)
+    │   └── Tapo.csproj
+    ├── Tapo.ConsoleTest/           sample CLI + secrets.json template
+    │   └── Tapo.ConsoleTest.csproj
     └── Tapo.Tests/                 xUnit unit + live integration tests
+        └── Tapo.Tests.csproj
 ```
 
 ## Disclaimer
