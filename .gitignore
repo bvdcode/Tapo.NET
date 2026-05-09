@@ -10,6 +10,10 @@
 *.userosscache
 *.sln.docstates
 *.env
+temp/
+
+# Local secrets for live integration tests / console samples.
+secrets.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

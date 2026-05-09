@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Tapo</RootNamespace>
+    <AssemblyName>Tapo.NET</AssemblyName>
+
+    <Authors>Vadim Belov</Authors>
+    <Company>bvdcode</Company>
+    <Product>Tapo.NET</Product>
+    <Title>Tapo.NET</Title>
+    <Description>.NET client for TP-Link Tapo IP cameras: control channel, recordings listing, fast SD-card download over the camera's media stream protocol, and device commands (LED, privacy, motion detection, audio, snapshot).</Description>
+    <Summary>.NET client for TP-Link Tapo IP cameras with native fast video downloads.</Summary>
+    <Copyright>Copyright © Vadim Belov 2026</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+
+    <PackageId>Tapo.NET</PackageId>
+    <PackageTags>tapo;tplink;camera;ipcamera;c200;c210;c220;c260;snapshot;mpegts</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/bvdcode/Tapo.NET</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bvdcode/Tapo.NET</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Tapo.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="6.0.10" />
+    <PackageReference Include="System.Threading.Channels" Version="6.0.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
