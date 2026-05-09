@@ -19,6 +19,7 @@
     <PackageId>Tapo.NET</PackageId>
     <PackageTags>tapo;tplink;camera;ipcamera;c200;c210;c220;c260;snapshot;mpegts</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>package-icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/bvdcode/Tapo.NET</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bvdcode/Tapo.NET</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -32,6 +33,7 @@
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
     <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="package-icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
