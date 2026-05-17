@@ -45,8 +45,8 @@ public readonly struct KeyExchange
                 continue;
             }
 
-            var key = part.Substring(0, eq).Trim();
-            var value = part.Substring(eq + 1).Trim().Trim('"');
+            var key = part[..eq].Trim();
+            var value = part[(eq + 1)..].Trim().Trim('"');
             values[key] = value;
         }
 

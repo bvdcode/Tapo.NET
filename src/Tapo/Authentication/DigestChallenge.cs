@@ -22,16 +22,36 @@ public sealed class DigestChallenge
         Algorithm = values.TryGetValue("algorithm", out var algorithm) ? algorithm : "MD5";
     }
 
+    /// <summary>
+    /// Realm advertised by the camera. The Tapo media-stream handshake requires this value to be included in the digest response calculation, but does not specify any particular format or content for it.
+    /// </summary>
     public string Realm { get; }
 
+    /// <summary>
+    /// Nonce value advertised by the camera. This is a random string that should be used as part of the digest response calculation to prevent replay attacks. The Tapo media-stream handshake requires this value to be included in the digest response, but does not specify any particular format or length for it.
+    /// </summary>
     public string Nonce { get; }
 
+    /// <summary>
+    /// Quality of Protection advertised by the camera. The Tapo media-stream handshake only supports "auth", but we parse this value for completeness and future compatibility.
+    /// </summary>
     public string Qop { get; }
 
+    /// <summary>
+    /// Opaque value advertised by the camera. The Tapo media-stream handshake does not use this value, but we parse it for completeness and future compatibility.
+    /// </summary>
     public string? Opaque { get; }
 
+    /// <summary>
+    /// Hash algorithm advertised by the camera. The Tapo media-stream handshake only supports "MD5", but we parse this value for completeness and future compatibility.
+    /// </summary>
     public string Algorithm { get; }
 
+    /// <summary>
+    /// Parses a <c>WWW-Authenticate: Digest ...</c> header value into a <see cref="DigestChallenge"/> instance.
+    /// </summary>
+    /// <param name="headerValue">The raw header value, including the leading "Digest" scheme name.</param>
+    /// <returns>A <see cref="DigestChallenge"/> instance containing the parsed values.</returns>
     public static DigestChallenge Parse(string headerValue)
     {
         Throw.IfNullOrEmpty(headerValue);
@@ -41,7 +61,7 @@ public sealed class DigestChallenge
         var trimmed = headerValue.TrimStart();
         if (trimmed.StartsWith(Scheme, StringComparison.OrdinalIgnoreCase))
         {
-            trimmed = trimmed.Substring(Scheme.Length).TrimStart();
+            trimmed = trimmed[Scheme.Length..].TrimStart();
         }
 
         var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -50,11 +70,11 @@ public sealed class DigestChallenge
             var eq = pair.IndexOf('=');
             if (eq <= 0) continue;
 
-            var name = pair.Substring(0, eq).Trim();
-            var rawValue = pair.Substring(eq + 1).Trim();
-            if (rawValue.Length >= 2 && rawValue[0] == '"' && rawValue[rawValue.Length - 1] == '"')
+            var name = pair[..eq].Trim();
+            var rawValue = pair[(eq + 1)..].Trim();
+            if (rawValue.Length >= 2 && rawValue[0] == '"' && rawValue[^1] == '"')
             {
-                rawValue = rawValue.Substring(1, rawValue.Length - 2);
+                rawValue = rawValue[1..^1];
             }
 
             values[name] = rawValue;
@@ -76,14 +96,14 @@ public sealed class DigestChallenge
             }
             else if (c == ',' && !inQuotes)
             {
-                yield return input.Substring(start, i - start);
+                yield return input[start..i];
                 start = i + 1;
             }
         }
 
         if (start < input.Length)
         {
-            yield return input.Substring(start);
+            yield return input[start..];
         }
     }
 }
