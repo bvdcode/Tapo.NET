@@ -13,6 +13,13 @@ public sealed class AesCbcCipher : ITapoCipher, IDisposable
 {
     private readonly Aes _aes;
 
+    /// <summary>
+    /// Initializes the cipher with the given key and IV. Both must be exactly 16 bytes.
+    /// </summary>
+    /// <param name="key">AES key.</param>
+    /// <param name="iv">AES initialization vector.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="key"/> or <paramref name="iv"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown if <paramref name="key"/> or <paramref name="iv"/> is not 16 bytes long.</exception>
     public AesCbcCipher(byte[] key, byte[] iv)
     {
         if (key is null) throw new ArgumentNullException(nameof(key));
@@ -68,6 +75,11 @@ public sealed class AesCbcCipher : ITapoCipher, IDisposable
         return new AesCbcCipher(key, iv);
     }
 
+    /// <summary>
+    /// Encrypts the given plaintext using the AES-128-CBC algorithm.
+    /// </summary>
+    /// <param name="plaintext">The plaintext to encrypt.</param>
+    /// <returns>The encrypted ciphertext.</returns>
     public byte[] Encrypt(ReadOnlySpan<byte> plaintext)
     {
         using var encryptor = _aes.CreateEncryptor();
@@ -75,6 +87,11 @@ public sealed class AesCbcCipher : ITapoCipher, IDisposable
         return encryptor.TransformFinalBlock(src, 0, src.Length);
     }
 
+    /// <summary>
+    /// Decrypts the given ciphertext using the AES-128-CBC algorithm.
+    /// </summary>
+    /// <param name="ciphertext">The ciphertext to decrypt.</param>
+    /// <returns>The decrypted plaintext.</returns>
     public byte[] Decrypt(ReadOnlySpan<byte> ciphertext)
     {
         using var decryptor = _aes.CreateDecryptor();
@@ -82,6 +99,9 @@ public sealed class AesCbcCipher : ITapoCipher, IDisposable
         return decryptor.TransformFinalBlock(src, 0, src.Length);
     }
 
+    /// <summary>
+    /// Releases all resources used by the cipher. After calling this method, the cipher instance should not be used anymore.
+    /// </summary>
     public void Dispose() => _aes.Dispose();
 
     private static readonly byte[] Colon = { (byte)':' };
