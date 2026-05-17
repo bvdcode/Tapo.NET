@@ -11,6 +11,7 @@ namespace Tapo.Cryptography;
 /// </summary>
 public readonly struct KeyExchange
 {
+    /// <summary>Creates a parsed Key-Exchange pair from the supplied fields.</summary>
     public KeyExchange(string username, string nonce)
     {
         Throw.IfNullOrEmpty(username);
@@ -20,8 +21,10 @@ public readonly struct KeyExchange
         Nonce = nonce;
     }
 
+    /// <summary>Username echoed by the camera — <c>"none"</c> when encryption is disabled.</summary>
     public string Username { get; }
 
+    /// <summary>Per-session nonce used as the AES key derivation input.</summary>
     public string Nonce { get; }
 
     /// <summary>

@@ -10,6 +10,7 @@ namespace Tapo.MediaStream;
 /// </summary>
 public sealed class MediaResponse
 {
+    /// <summary>Creates a new multipart media response.</summary>
     public MediaResponse(
         long? sequence,
         long? sessionId,
@@ -28,14 +29,19 @@ public sealed class MediaResponse
         JsonDocument = jsonDocument;
     }
 
+    /// <summary>Sequence number echoed by the camera for the request, if any.</summary>
     public long? Sequence { get; }
 
+    /// <summary>Stream-session identifier the camera assigned to this response, if any.</summary>
     public long? SessionId { get; }
 
+    /// <summary>Raw multipart part headers.</summary>
     public IReadOnlyDictionary<string, string> Headers { get; }
 
+    /// <summary><see langword="true"/> if the body was AES-encrypted on the wire and decrypted in-place.</summary>
     public bool Encrypted { get; }
 
+    /// <summary>Content-Type of <see cref="Payload"/> (see <see cref="MimeTypes"/>).</summary>
     public string MimeType { get; }
 
     /// <summary>Decrypted bytes of this part. Borrowed from the channel-internal pool — copy if you need to keep it.</summary>

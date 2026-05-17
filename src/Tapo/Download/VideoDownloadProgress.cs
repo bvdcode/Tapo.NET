@@ -5,6 +5,7 @@ namespace Tapo.Download;
 /// </summary>
 public readonly struct VideoDownloadProgress
 {
+    /// <summary>Creates a new progress snapshot.</summary>
     public VideoDownloadProgress(long bytesWritten, long packetsReceived, long? totalSeconds)
     {
         BytesWritten = bytesWritten;

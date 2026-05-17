@@ -45,5 +45,6 @@ public sealed class MediaSessionOptions
     /// <summary>Connect/IO timeouts in milliseconds. Zero means infinite.</summary>
     public int ConnectTimeoutMilliseconds { get; init; } = 10_000;
 
+    /// <summary>Per-read/per-write timeout on the media-stream socket. Zero means infinite.</summary>
     public int IoTimeoutMilliseconds { get; init; } = 30_000;
 }

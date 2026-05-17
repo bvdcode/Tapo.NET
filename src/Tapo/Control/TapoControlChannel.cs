@@ -37,6 +37,11 @@ public sealed class TapoControlChannel : IControlChannel
     private int? _seq;
     private bool? _isSecure;
 
+    /// <summary>
+    /// Creates a new control channel against the camera described by <paramref name="options"/>.
+    /// Pass <paramref name="httpClient"/> to share an outer <see cref="HttpClient"/>; otherwise a
+    /// dedicated one is created and disposed with the channel.
+    /// </summary>
     public TapoControlChannel(ControlChannelOptions options, HttpClient? httpClient = null)
     {
         Throw.IfNull(options);
@@ -72,10 +77,13 @@ public sealed class TapoControlChannel : IControlChannel
         ConfigureDefaultHeaders();
     }
 
+    /// <summary><see langword="true"/> once a session token has been negotiated.</summary>
     public bool IsAuthenticated => !string.IsNullOrEmpty(_stok);
 
+    /// <summary>Password hash algorithm negotiated with the camera during login.</summary>
     public EncryptionMethod EncryptionMethod { get; private set; } = EncryptionMethod.Md5;
 
+    /// <summary>Performs the login handshake if no session is active. Safe to call concurrently.</summary>
     public async Task AuthenticateAsync(CancellationToken cancellationToken = default)
     {
         if (IsAuthenticated) return;
@@ -92,6 +100,7 @@ public sealed class TapoControlChannel : IControlChannel
         }
     }
 
+    /// <summary>Sends a single JSON request and returns the parsed response. Re-authenticates once on failure.</summary>
     public async Task<JsonDocument> SendAsync(JsonElement request, CancellationToken cancellationToken = default)
     {
         await AuthenticateAsync(cancellationToken).ConfigureAwait(false);
@@ -427,6 +436,7 @@ public sealed class TapoControlChannel : IControlChannel
         _ivb = null;
     }
 
+    /// <inheritdoc />
     public ValueTask DisposeAsync()
     {
         _sendLock.Dispose();

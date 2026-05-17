@@ -12,6 +12,7 @@ namespace Tapo.Authentication;
 /// </summary>
 public static class NonceGenerator
 {
+    /// <summary>Generates a random hex-encoded nonce of <paramref name="byteLength"/> random bytes (so 2× as many hex characters).</summary>
     public static string Generate(int byteLength = 24)
     {
         if (byteLength <= 0) throw new ArgumentOutOfRangeException(nameof(byteLength));

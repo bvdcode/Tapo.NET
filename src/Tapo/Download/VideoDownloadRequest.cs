@@ -8,14 +8,17 @@ namespace Tapo.Download;
 /// </summary>
 public sealed class VideoDownloadRequest
 {
+    /// <summary>Creates a new download request for the supplied recording window.</summary>
     public VideoDownloadRequest(long startTimeUnix, long endTimeUnix)
     {
         StartTimeUnix = startTimeUnix;
         EndTimeUnix = endTimeUnix;
     }
 
+    /// <summary>Recording start time as a Unix timestamp in camera-local seconds.</summary>
     public long StartTimeUnix { get; }
 
+    /// <summary>Recording end time as a Unix timestamp in camera-local seconds.</summary>
     public long EndTimeUnix { get; }
 
     /// <summary>Channels to request — defaults to <c>[0, 1]</c> (video + audio).</summary>

@@ -41,6 +41,7 @@ public sealed class MediaSession : IMediaSession
     private Task? _responseLoop;
     private long _nextSequence = 1000;
 
+    /// <summary>Creates a new media session for the camera described by <paramref name="options"/>. Call <see cref="StartAsync"/> to connect.</summary>
     public MediaSession(MediaSessionOptions options)
     {
         Throw.IfNull(options);
@@ -51,10 +52,13 @@ public sealed class MediaSession : IMediaSession
         WindowSize = options.WindowSize;
     }
 
+    /// <summary><see langword="true"/> after <see cref="StartAsync"/> has completed successfully.</summary>
     public bool IsStarted { get; private set; }
 
+    /// <summary>Current camera-side flow-control window. See <see cref="MediaSessionOptions.WindowSize"/>.</summary>
     public int WindowSize { get; private set; }
 
+    /// <summary>Overrides <see cref="WindowSize"/>. Must be called before <see cref="StartAsync"/>.</summary>
     public void SetWindowSize(int windowSize)
     {
         if (windowSize <= 0) throw new ArgumentOutOfRangeException(nameof(windowSize));
@@ -62,6 +66,7 @@ public sealed class MediaSession : IMediaSession
         WindowSize = windowSize;
     }
 
+    /// <summary>Opens the TCP connection, performs the TPAP handshake and starts the response loop. Idempotent.</summary>
     public async Task StartAsync(CancellationToken cancellationToken = default)
     {
         if (IsStarted) return;
@@ -96,6 +101,7 @@ public sealed class MediaSession : IMediaSession
         _responseLoop = Task.Run(() => ResponseLoopAsync(_shutdownCts.Token));
     }
 
+    /// <summary>Sends a single request and yields each multipart response part as it arrives, until the camera signals end-of-stream.</summary>
     public IAsyncEnumerable<MediaResponse> TransceiveAsync(
         byte[] payload,
         string mimeType = MimeTypes.Json,
@@ -580,6 +586,7 @@ public sealed class MediaSession : IMediaSession
         foreach (var channel in _bySession.Values) channel.Writer.TryComplete(new TapoProtocolException("Media stream interrupted."));
     }
 
+    /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
         if (!IsStarted) return;

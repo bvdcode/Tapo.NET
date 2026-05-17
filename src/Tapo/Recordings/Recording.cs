@@ -5,6 +5,7 @@ namespace Tapo.Recordings;
 /// </summary>
 public sealed class Recording
 {
+    /// <summary>Creates a recording metadata entry.</summary>
     public Recording(int id, long startTimeUnix, long endTimeUnix)
     {
         Id = id;

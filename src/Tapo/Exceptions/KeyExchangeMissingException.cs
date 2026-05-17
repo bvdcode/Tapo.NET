@@ -6,6 +6,7 @@ namespace Tapo;
 /// </summary>
 public sealed class KeyExchangeMissingException : TapoException
 {
+    /// <summary>Creates the exception with the standard descriptive message.</summary>
     public KeyExchangeMissingException()
         : base("Server reply does not contain the required Key-Exchange header.") { }
 }

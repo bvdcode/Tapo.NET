@@ -17,12 +17,14 @@ public sealed class RecordingsClient : IRecordingsClient
     private int? _cachedUserId;
     private long? _cachedTimeCorrection;
 
+    /// <summary>Creates a new recordings client backed by the supplied <see cref="IControlChannel"/>.</summary>
     public RecordingsClient(IControlChannel control)
     {
         Throw.IfNull(control);
         _control = control;
     }
 
+    /// <summary>Resolves the camera-side user id used to scope playback queries. Cached after the first call.</summary>
     public async Task<int> GetUserIdAsync(CancellationToken cancellationToken = default)
     {
         if (_cachedUserId is { } cached) return cached;
@@ -53,6 +55,7 @@ public sealed class RecordingsClient : IRecordingsClient
         throw new TapoProtocolException("getUserID response did not contain a user_id.");
     }
 
+    /// <summary>Returns the offset in seconds between the host clock and the camera clock (host − camera). Cached after the first call.</summary>
     public async Task<long> GetTimeCorrectionAsync(CancellationToken cancellationToken = default)
     {
         if (_cachedTimeCorrection is { } cached) return cached;
@@ -86,12 +89,14 @@ public sealed class RecordingsClient : IRecordingsClient
         return correction;
     }
 
+    /// <summary>Lists all recordings stored on the camera for the supplied calendar day (camera-local time).</summary>
     public Task<IReadOnlyList<Recording>> GetRecordingsAsync(DateTime date, CancellationToken cancellationToken = default)
     {
         var dateString = date.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
         return GetRecordingsForDateAsync(dateString, cancellationToken);
     }
 
+    /// <summary>Lists all recordings whose timestamp falls between <paramref name="startUnixTime"/> and <paramref name="endUnixTime"/> (Unix seconds).</summary>
     public async Task<IReadOnlyList<Recording>> GetRecordingsAsync(long startUnixTime, long endUnixTime, CancellationToken cancellationToken = default)
     {
         Throw.IfNegative(startUnixTime);

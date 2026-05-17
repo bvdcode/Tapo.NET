@@ -9,9 +9,12 @@ namespace Tapo;
 /// </summary>
 public class TapoException : Exception
 {
+    /// <summary>Creates the exception with no message.</summary>
     public TapoException() { }
 
+    /// <summary>Creates the exception with the supplied message.</summary>
     public TapoException(string message) : base(message) { }
 
+    /// <summary>Creates the exception with the supplied message and inner exception.</summary>
     public TapoException(string message, Exception? inner) : base(message, inner) { }
 }
